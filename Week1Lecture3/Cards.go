@@ -1,22 +1,35 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
-func compareCards(CardOneVal, CardOneSuit, CardTwoVal, CardTwoSuit int) int {
+func compareCards(CardOneVal, CardOneSuit, CardTwoVal, CardTwoSuit int) (int, error) {
+	//error handling
 
-	if CardOneVal < CardTwoVal {
-		return -1
+	if CardOneVal < 2 || CardOneVal > 13 || CardTwoVal < 2 || CardTwoVal > 13 {
+		return -1, errors.New("Card value should be between 2 and 13, try again")
+	}
+	if CardOneSuit < 1 || CardOneSuit > 4 || CardTwoSuit < 1 || CardTwoSuit > 4 {
+		return -1, errors.New("Card suit should be between 1 and 4, try again")
+	}
+
+	//function logic flow
+
+	if CardOneVal < CardTwoVal { //check values
+		return -1, nil
 	}
 	if CardOneVal > CardTwoVal {
-		return 1
+		return 1, nil
 	} else {
-		if CardOneSuit < CardTwoSuit {
-			return -1
+		if CardOneSuit < CardTwoSuit { //check suit
+			return -1, nil
 		}
 		if CardOneSuit > CardTwoSuit {
-			return 1
+			return 1, nil
 		} else {
-			return 0
+			return 0, nil
 		}
 
 	}
@@ -38,7 +51,13 @@ func main() {
 	fmt.Print("Enter car two value: ")
 	fmt.Scanf("%d", &CardTwoVal)
 
-	res := compareCards(CardOneVal, CardOneSuit, CardTwoVal, CardTwoSuit)
-	fmt.Println(res)
+	res, err := compareCards(CardOneVal, CardOneSuit, CardTwoVal, CardTwoSuit)
+	if err != nil {
+		// Handle the error
+		fmt.Println(err)
+	} else {
+		// No errors
+		fmt.Println(res)
+	}
 
 }
