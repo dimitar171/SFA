@@ -11,10 +11,9 @@ func compareCards(CardOneVal, CardOneSuit, CardTwoVal, CardTwoSuit int) (int, er
 	if CardOneVal < 2 || CardOneVal > 13 || CardTwoVal < 2 || CardTwoVal > 13 {
 		return -1, errors.New("Card value should be between 2 and 13, try again")
 	}
-	if CardOneSuit < 1 || CardOneSuit > 4 || CardTwoSuit < 1 || CardTwoSuit > 4 {
+	if CardOneSuit < 0 || CardOneSuit > 3 || CardTwoSuit < 0 || CardTwoSuit > 3 {
 		return -1, errors.New("Card suit should be between 1 and 4, try again")
 	}
-
 	//function logic flow
 
 	if CardOneVal < CardTwoVal { //check values
@@ -36,28 +35,32 @@ func compareCards(CardOneVal, CardOneSuit, CardTwoVal, CardTwoSuit int) (int, er
 }
 
 func main() {
-	var CardOneVal int
-	var CardTwoVal int
-	var CardOneSuit int
-	var CardTwoSuit int
+
+	type CardSuit = int
+	const (
+		club CardSuit = iota
+		diamond
+		heart
+		spade
+	)
 
 	//Enter values of cards
-	fmt.Print("Enter card one suit : ")
-	fmt.Scanf("%d\n", &CardOneSuit)
-	fmt.Print("Enter car one value: ")
-	fmt.Scanf("%d\n", &CardOneVal)
-	fmt.Print("Enter card two suit : ")
-	fmt.Scanf("%d\n", &CardTwoSuit)
-	fmt.Print("Enter car two value: ")
-	fmt.Scanf("%d", &CardTwoVal)
+	var CardOneVal = []int{7, 5, 3, 1, 7}
+	var CardTwoVal = []int{7, 3, 3, 4, 8}
 
-	res, err := compareCards(CardOneVal, CardOneSuit, CardTwoVal, CardTwoSuit)
-	if err != nil {
-		// Handle the error
-		fmt.Println(err)
-	} else {
-		// No errors
-		fmt.Println(res)
+	var CardOneSuit = []CardSuit{diamond, heart, heart, diamond, heart}
+	var CardTwoSuit = []CardSuit{diamond, heart, spade, spade, diamond}
+
+	var i int
+	for i = 0; i < 5; i++ {
+
+		res, err := compareCards(CardOneVal[i], CardOneSuit[i], CardTwoVal[i], CardTwoSuit[i])
+		if err != nil {
+			// Handle the error
+			fmt.Println(err)
+		} else {
+			// No errors
+			fmt.Println(res)
+		}
 	}
-
 }
