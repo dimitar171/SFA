@@ -12,7 +12,7 @@ func compareCards(CardOneVal, CardOneSuit, CardTwoVal, CardTwoSuit int) (int, er
 		return -1, errors.New("Card value should be between 2 and 13, try again")
 	}
 	if CardOneSuit < 0 || CardOneSuit > 3 || CardTwoSuit < 0 || CardTwoSuit > 3 {
-		return -1, errors.New("Card suit should be between 1 and 4, try again")
+		return -1, errors.New("Card suit should be club,diamond,heart or spade, try again")
 	}
 	//function logic flow
 
@@ -45,14 +45,14 @@ func main() {
 	)
 
 	//Enter values of cards
-	var CardOneVal = []int{7, 5, 3, 1, 7}
-	var CardTwoVal = []int{7, 3, 3, 4, 8}
+	var CardOneVal = []int{7, 5, 3, 1, 7, 7, 5, 1, 12, 8}
+	var CardTwoVal = []int{7, 3, 3, 4, 8, 7, 5, 6, 12, 8}
 
-	var CardOneSuit = []CardSuit{diamond, heart, heart, diamond, heart}
-	var CardTwoSuit = []CardSuit{diamond, heart, spade, spade, diamond}
+	var CardOneSuit = []CardSuit{diamond, heart, heart, diamond, heart, diamond, heart, spade, spade, heart}
+	var CardTwoSuit = []CardSuit{diamond, heart, spade, spade, diamond, diamond, spade, diamond, 5, diamond}
 
 	var i int
-	for i = 0; i < 5; i++ {
+	for i = 0; i < 10; i++ {
 
 		res, err := compareCards(CardOneVal[i], CardOneSuit[i], CardTwoVal[i], CardTwoSuit[i])
 		if err != nil {
