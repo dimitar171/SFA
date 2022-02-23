@@ -28,9 +28,11 @@ func citiesAndPrices() ([]string, []int) {
 func groupSlices(keySlice []string, valueSlice []int) map[string][]int {
 
 	m := make(map[string][]int)
+	var count int = 0
 
 	for _, v := range keySlice {
-		m[v] = valueSlice
+		m[v] = append(m[v], valueSlice[count])
+		count++
 	}
 	return m
 }
