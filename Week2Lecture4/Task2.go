@@ -9,7 +9,7 @@ import (
 func citiesAndPrices() ([]string, []int) {
 	rand.Seed(time.Now().UnixMilli())
 	cityChoices := []string{"Berlin", "Moscow", "Chicago", "Tokyo", "London"}
-	dataPointCount := 10
+	dataPointCount := 100
 
 	// randomly choose cities
 	cities := make([]string, dataPointCount)
