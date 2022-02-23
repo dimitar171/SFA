@@ -45,7 +45,7 @@ func main() {
 	)
 
 	//Enter values of cards
-	var CardOneVal = []int{7, 5, 3, 1, 7, 7, 5, 1, 12, 8}
+	var CardOneVal = []int{7, 5, 3, 2, 14, 7, 5, 1, 12, 8}
 	var CardTwoVal = []int{7, 3, 3, 4, 8, 7, 5, 6, 12, 8}
 
 	var CardOneSuit = []CardSuit{diamond, heart, heart, diamond, heart, diamond, heart, spade, spade, heart}
