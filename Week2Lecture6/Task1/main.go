@@ -26,15 +26,18 @@ func add(l *MagicList, val int) {
 
 var i []int
 
-func ReverseLinkedList(head *Item) []int {
-	if head != nil {
-		i = append(i, head.Value)
-		ReverseLinkedList(head.PrevItem)
+func toSlice(l *MagicList) []int {
+	currentNode := l.LastItem
+	for currentNode.PrevItem != nil {
 
+		i = append([]int{currentNode.Value}, i...)
+		currentNode = currentNode.PrevItem
 	}
-	return i
-}
+	i = append([]int{currentNode.Value}, i...)
 
+	return i
+
+}
 func main() {
 	ml := &MagicList{}
 	add(ml, 10)
@@ -46,5 +49,6 @@ func main() {
 	add(ml, 60)
 	add(ml, 70)
 	add(ml, 80)
-	fmt.Println(ReverseLinkedList(ml.LastItem))
+
+	fmt.Println(toSlice(ml))
 }

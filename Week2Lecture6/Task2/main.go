@@ -28,7 +28,7 @@ var i []int
 
 func toSlice(head *Item) []int {
 	if head != nil {
-		i = append(i, head.Value)
+		i = append([]int{head.Value}, i...)
 		toSlice(head.PrevItem)
 
 	}
