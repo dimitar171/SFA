@@ -7,7 +7,7 @@ import (
 )
 
 type Deck struct {
-	deck []Card
+	card []Card
 }
 
 type Card struct {
@@ -29,33 +29,37 @@ func (d *Deck) New() Deck {
 func (d *Deck) Shuffle() Deck {
 
 	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(len(d.deck), func(i, j int) { d.deck[i], d.deck[j] = d.deck[j], d.deck[i] })
+	rand.Shuffle(len(d.card), func(i, j int) { d.card[i], d.card[j] = d.card[j], d.card[i] })
 
 	return *d
 
 }
 
-func (d *Deck) Deal() Deck {
-	if len(d.deck) == 0 {
-		d.deck = nil
-		return *d
+func (d *Deck) Deal() []Card {
+
+	if len(d.card) == 0 {
+		return nil
 	}
-	d.deck = d.deck[1:]
-	return *d
+	pom := d.card[:1]
+	d.card = d.card[1:]
+
+	return pom
 }
 
 func main() {
 	deck := Deck{}
-	fmt.Println(deck) //this checks an empty deck
-
 	deck = deck.New() //filing the deck
 	fmt.Println(deck)
 
 	deck = deck.Shuffle() //shuffling it
 	fmt.Println(deck)
 
-	for i := 0; i < 30; i++ { //removing items from the deck
-		deck = deck.Deal()
+	card := deck.Deal()
+	fmt.Println(card)
+
+	for i := 0; i < 5; i++ { //removing items from the deck
+		card = deck.Deal()
+		fmt.Println(card)
 	}
 	fmt.Println(deck)
 }
