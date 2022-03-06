@@ -35,12 +35,12 @@ func (d *Deck) Shuffle() Deck {
 
 }
 
-func (d *Deck) Deal() []Card {
+func (d *Deck) Deal() *Card {
 
 	if len(d.card) == 0 {
 		return nil
 	}
-	pom := d.card[:1]
+	pom := &d.card[0]
 	d.card = d.card[1:]
 
 	return pom
@@ -51,15 +51,12 @@ func main() {
 	deck = deck.New() //filing the deck
 	fmt.Println(deck)
 
-	deck = deck.Shuffle() //shuffling it
-	fmt.Println(deck)
-
 	card := deck.Deal()
 	fmt.Println(card)
 
 	for i := 0; i < 5; i++ { //removing items from the deck
 		card = deck.Deal()
-		fmt.Println(card)
+		fmt.Println(*card)
 	}
 	fmt.Println(deck)
 }
