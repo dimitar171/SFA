@@ -25,19 +25,17 @@ type Shape interface {
 	Area() float64
 }
 
-type Shapes struct {
-	shapes []Shape
-}
+type Shapes []Shape
 
 func (s Shapes) LargestArea() float64 {
 
-	pom := s.shapes[0].Area()
-	for _, s := range s.shapes {
-		if s.Area() > pom {
-			pom = s.Area()
+	pom := s[0]
+	for _, s := range s {
+		if s.Area() > pom.Area() {
+			pom = s
 		}
 	}
-	return pom
+	return pom.Area()
 
 }
 
@@ -46,17 +44,17 @@ func main() {
 	fmt.Println(c.Area())
 	s := Square{2}
 	fmt.Println(s.Area())
+
 	sh := Shapes{
-		shapes: []Shape{
-			Square{2},
-			Circle{3},
-			Square{3},
-			Square{15},
-			Circle{6},
-			Square{7},
-			Square{5},
-			Square{3},
-		}}
+		Square{2},
+		Circle{3},
+		Square{3},
+		Square{15},
+		Circle{6},
+		Square{7},
+		Square{5},
+		Square{3},
+	}
 	fmt.Println(sh.LargestArea())
 
 }
