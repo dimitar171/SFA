@@ -11,7 +11,7 @@ func SafeExec(action Action) Action {
 
 	defer func() {
 		if r := recover(); r != nil {
-			log.Fatalf("there was an error: %v !", r)
+			log.Fatalf("safe exec:  %v !", r)
 		} else {
 			fmt.Println("couldn't recover")
 		}
