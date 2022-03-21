@@ -23,11 +23,11 @@ func generateThrottled(data string, bufferLimit int, clearInterval time.Duration
 
 	go func() {
 		for {
-			timeoutChan := time.After(clearInterval)
+
 			select {
 			case evenQueue <- data:
 				outChan <- data
-			case <-timeoutChan:
+			case <-time.After(clearInterval):
 				for i := 0; i < bufferLimit; i++ {
 
 					<-evenQueue
