@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+
+	// "sync"
 	"time"
 )
 
@@ -17,19 +19,22 @@ func main() {
 
 func generateThrottled(data string, bufferLimit int, clearInterval time.Duration) <-chan string {
 	evenQueue := make(chan string, bufferLimit)
+	outChan := make(chan string)
 
 	go func() {
 		for {
 			timeoutChan := time.After(clearInterval)
 			select {
 			case evenQueue <- data:
-				evenQueue <- data
-				<-timeoutChan
+				outChan <- data
 			case <-timeoutChan:
-				<-evenQueue
+				for i := 0; i < bufferLimit; i++ {
+
+					<-evenQueue
+				}
 			}
 		}
 	}()
 
-	return evenQueue
+	return outChan
 }
