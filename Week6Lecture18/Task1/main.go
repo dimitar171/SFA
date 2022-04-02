@@ -13,24 +13,27 @@ func main() {
 
 func goPrimesAndSleep(n int, sleep time.Duration) []int {
 	res := []int{}
+
 	var wg sync.WaitGroup
-	for k := 2; k < n; k++ {
-		wg.Add(1)
-		go func(k int) {
-			defer wg.Done()
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for k := 2; k < n; k++ {
+
 			for i := 2; i < n; i++ {
 				if k%i == 0 {
-					time.Sleep(sleep)
 					if k == i {
 						res = append(res, k)
+						time.Sleep(sleep)
 					}
 					break
 				}
 
 			}
 
-		}(k)
-	}
+		}
+	}()
+
 	wg.Wait()
 	return res
 }
