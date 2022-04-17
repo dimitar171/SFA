@@ -20,41 +20,44 @@ func HandleUserTop(stories []byte) http.HandlerFunc {
 	}
 
 }
+
+func generator(arr []int) chan top_stories {
+	c := make(chan top_stories)
+	go func() {
+		for _, result := range arr {
+			topStori := fmt.Sprintf("https://hacker-news.firebaseio.com/v0/item/%d.json?print=pretty", result)
+			resp, _ := http.Get(topStori)
+
+			payload := top_stories{}
+			json.NewDecoder(resp.Body).Decode(&payload)
+			resp.Body.Close()
+			c <- payload
+		}
+		close(c)
+	}()
+	return c
+}
+
 func main() {
 	var arr []int
 
-	//make a call for top stories
+	//Get top stories number
 
 	respTop, _ := http.Get("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
 
 	json.NewDecoder(respTop.Body).Decode(&arr)
 	arr = arr[0:10]
 	respTop.Body.Close()
-	// get the first 10
 	var rez []top_stories
-
-	// c := make(chan int)
-	// go func() {
-	// for i:= 0; i < 10 ; i++ {
-	// 	c <- i
-	//  }
-	// 	close(c)
-	// }()
-	// return c
-	for _, result := range arr {
-		topStori := fmt.Sprintf("https://hacker-news.firebaseio.com/v0/item/%d.json?print=pretty", result)
-		resp, _ := http.Get(topStori)
-
-		payload := top_stories{}
-		json.NewDecoder(resp.Body).Decode(&payload)
-
-		rez = append(rez, payload)
-		resp.Body.Close()
+	//Get title and score with generator function concurently
+	for v := range generator(arr) {
+		rez = append(rez, v)
 	}
+	//create JSON response
 	res := myArray{rez}
 	result, _ := json.MarshalIndent(res, "", "")
 
-	//create a server
+	//show the results on localhost:9000/top
 	mux := http.NewServeMux()
 	mux.Handle("/top", HandleUserTop(result))
 	http.ListenAndServe(":9000", mux)
