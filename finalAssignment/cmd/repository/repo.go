@@ -2,11 +2,30 @@ package repository
 
 import (
 	"database/sql"
-	"final/cmd/todos"
 	"fmt"
 
 	_ "modernc.org/sqlite"
 )
+
+type List struct {
+	ID     int    `json:"id"`
+	Name   string `json:"name"`
+	UserId int    `json:"userId"`
+}
+
+// Task is a struct containing Task data
+type Task struct {
+	Id        int    `json:"id"`
+	Text      string `json:"text"`
+	ListId    int    `json:"listId"`
+	Completed bool   `json:"completed"`
+}
+
+type User struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	Pass string `json:"pass"`
+}
 
 type Repository struct {
 	db *sql.DB
@@ -16,7 +35,7 @@ func NewRepository(db *sql.DB) *Repository {
 	return &Repository{db: db}
 }
 
-func (rp *Repository) GetLists() []todos.List {
+func (rp *Repository) GetLists() []List {
 	id := rp.GetCurrentUser()
 	sql := fmt.Sprintf("SELECT * FROM lists WHERE userId=%d", id)
 	rows, err := rp.db.Query(sql)
@@ -25,9 +44,9 @@ func (rp *Repository) GetLists() []todos.List {
 		panic(err)
 	}
 	defer rows.Close()
-	result := []todos.List{}
+	result := []List{}
 	for rows.Next() {
-		temp := todos.List{}
+		temp := List{}
 		err2 := rows.Scan(&temp.ID, &temp.Name, &temp.UserId)
 		if err2 != nil {
 			panic(err2)
@@ -67,7 +86,7 @@ func (rp *Repository) DeleteList(id int) (int64, error) {
 	return result.RowsAffected()
 }
 
-func (rp *Repository) GetTasks(id int) []todos.Task {
+func (rp *Repository) GetTasks(id int) []Task {
 	sql := fmt.Sprintf("SELECT * FROM tasks WHERE listId=%d", id)
 	rows, err := rp.db.Query(sql)
 	if err != nil {
@@ -75,9 +94,9 @@ func (rp *Repository) GetTasks(id int) []todos.Task {
 	}
 	defer rows.Close()
 
-	result := []todos.Task{}
+	result := []Task{}
 	for rows.Next() {
-		temp := todos.Task{}
+		temp := Task{}
 		err2 := rows.Scan(&temp.Id, &temp.Text, &temp.ListId, &temp.Completed)
 		if err2 != nil {
 			panic(err2)
@@ -130,16 +149,16 @@ func (rp *Repository) PatchTask(id int) (int64, error) {
 	return result.RowsAffected()
 }
 
-func (rp *Repository) GetUsers() []todos.User {
+func (rp *Repository) GetUsers() []User {
 	sql := "SELECT * FROM users"
 	rows, err := rp.db.Query(sql)
 	if err != nil {
 		panic(err)
 	}
 	defer rows.Close()
-	result := []todos.User{}
+	result := []User{}
 	for rows.Next() {
-		temp := todos.User{}
+		temp := User{}
 		err2 := rows.Scan(&temp.ID, &temp.Name, &temp.Pass)
 		if err2 != nil {
 			panic(err2)

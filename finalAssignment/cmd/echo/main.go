@@ -10,6 +10,9 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+
 	_ "modernc.org/sqlite"
 )
 
@@ -27,19 +30,19 @@ func main() {
 	router := rout.Router(apiH)
 
 	// Add your handler (API endpoint) registrations here
-	// router.Use(middleware.BasicAuth(apiH.Authorize))
-	// router.GET("/api", func(ctx echo.Context) error {
-	// 	return ctx.JSON(200, "Hello, World!")
-	// })
-	// router.GET("/api/list/export", apiH.GetCsv())
-	// router.GET("/api/weather", apiH.GetWeather())
-	// router.DELETE("/api/lists/:id", apiH.DeleteList())
-	// router.POST("/api/lists", apiH.PutList())
-	// router.GET("/api/lists", apiH.GetLists())
-	// router.DELETE("/api/tasks/:id", apiH.DeleteTask())
-	// router.POST("/api/lists/:id/tasks", apiH.PutTask())
-	// router.GET("/api/lists/:id/tasks", apiH.GetTasks())
-	// router.PATCH("/api/tasks/:id", apiH.PatchTasks())
+	router.Use(middleware.BasicAuth(apiH.Authorize))
+	router.GET("/api", func(ctx echo.Context) error {
+		return ctx.JSON(200, "Hello, World!")
+	})
+	router.GET("/api/list/export", apiH.GetCsv())
+	router.GET("/api/weather", apiH.GetWeather())
+	router.DELETE("/api/lists/:id", apiH.DeleteList())
+	router.POST("/api/lists", apiH.PutList())
+	router.GET("/api/lists", apiH.GetLists())
+	router.DELETE("/api/tasks/:id", apiH.DeleteTask())
+	router.POST("/api/lists/:id/tasks", apiH.PutTask())
+	router.GET("/api/lists/:id/tasks", apiH.GetTasks())
+	router.PATCH("/api/tasks/:id", apiH.PatchTasks())
 
 	// Do not touch this line!
 	log.Fatal(http.ListenAndServe(":3000", cmd.CreateCommonMux(router)))

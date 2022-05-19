@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"final/cmd/todos"
+	"final/cmd/repository"
 	"net/http"
 	"strconv"
 
@@ -19,7 +19,7 @@ func (api API) GetTasks() echo.HandlerFunc {
 // PutTask endpoint
 func (api API) PutTask() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var Task todos.Task
+		var Task repository.Task
 		c.Bind(&Task)
 		id1, _ := strconv.Atoi(c.Param("id"))
 		id, err := api.StorageService.PutTask(Task.Text, id1, Task.Completed)

@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"final/cmd/repository"
-	"final/cmd/todos"
+
 	"final/cmd/weather"
 	"net/http"
 	"strconv"
@@ -27,7 +27,7 @@ func (api API) GetLists() echo.HandlerFunc {
 // PutList handler
 func (api API) PutList() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var List todos.List
+		var List repository.List
 		c.Bind(&List)
 		id, err := api.StorageService.PutList(List.Name)
 		if err == nil {

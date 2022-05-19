@@ -2,7 +2,6 @@ package repository
 
 import (
 	"database/sql"
-	"final/cmd/todos"
 	"fmt"
 	"reflect"
 	"testing"
@@ -33,14 +32,14 @@ func TestGetLists(t *testing.T) {
 		t.Fatal(err)
 	}
 	res := repo.GetLists()
-	wantedLists := []todos.List{{ID: 1, Name: "UnitTest"}}
+	wantedLists := []List{{ID: 1, Name: "UnitTest"}}
 	if !reflect.DeepEqual(res, wantedLists) {
 		t.Fatal("Failed to get lists")
 	}
 }
 
 func TestPutLists(t *testing.T) {
-	mockList := todos.List{ID: 1, Name: "UnitTest"}
+	mockList := List{ID: 1, Name: "UnitTest"}
 
 	mockDb, err := sql.Open("sqlite", ":memory:")
 	if err != nil {
@@ -74,8 +73,8 @@ func TestDeleteLists(t *testing.T) {
 		t.Fatal(err)
 	}
 	repo.DeleteList(1)
-	res := []todos.List{{ID: 0}}
-	wantedLists := []todos.List{{}}
+	res := []List{{ID: 0}}
+	wantedLists := []List{{}}
 	fmt.Println(res)
 	fmt.Println(wantedLists)
 	if !reflect.DeepEqual(res, wantedLists) {
