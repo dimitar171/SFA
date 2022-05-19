@@ -37,10 +37,10 @@ func (api WeatherInfo) GetWeather(lat, long string) formatedWeather {
 	var st WeatherInfo
 	json.NewDecoder(resp.Body).Decode(&st)
 	temp := fmt.Sprintf("%v", st.Main.Temp)
-	res := formatedWeather{
+	result := formatedWeather{
 		FormatedTemp: temp,
 		Description:  st.Weather[0].Description,
 		City:         st.Name,
 	}
-	return res
+	return result
 }
