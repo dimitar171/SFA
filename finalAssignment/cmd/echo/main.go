@@ -6,6 +6,7 @@ import (
 	"final/cmd/echo/rout"
 	"final/cmd/handlers"
 	"final/cmd/repository"
+	"final/cmd/weather"
 	"fmt"
 	"log"
 	"net/http"
@@ -23,8 +24,10 @@ func main() {
 	// })
 
 	repo := repository.NewRepository(db)
+	weather := weather.NewWeather("https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=ae63cfc04efb2375a879a9a9587a7589")
 	apiH := handlers.API{StorageService: *repo}
-	router := rout.Router(apiH)
+	apiW := handlers.WeatherAPI{WeatherUrl: *weather}
+	router := rout.Router(apiH, apiW)
 
 	// Do not touch this line!
 	log.Fatal(http.ListenAndServe(":3000", cmd.CreateCommonMux(router)))

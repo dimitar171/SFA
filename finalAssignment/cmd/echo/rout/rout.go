@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func Router(apiH handlers.API) *echo.Echo {
+func Router(apiH handlers.API, apiW handlers.WeatherAPI) *echo.Echo {
 	router := echo.New()
 
 	router.Use(middleware.BasicAuth(apiH.Authorize))
@@ -17,7 +17,7 @@ func Router(apiH handlers.API) *echo.Echo {
 		return ctx.JSON(200, "Hello, World!")
 	})
 	router.GET("/api/list/export", apiH.GetCsv())
-	router.GET("/api/weather", apiH.GetWeather())
+	router.GET("/api/weather", apiW.GetWeather())
 	router.DELETE("/api/lists/:id", apiH.DeleteList())
 	router.POST("/api/lists", apiH.PutList())
 	router.GET("/api/lists", apiH.GetLists())

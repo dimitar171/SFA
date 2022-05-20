@@ -3,7 +3,6 @@ package handlers
 import (
 	"final/cmd/repository"
 
-	"final/cmd/weather"
 	"net/http"
 	"strconv"
 
@@ -14,7 +13,6 @@ type H map[string]interface{}
 
 type API struct {
 	StorageService repository.Repository
-	WeatherApp     weather.WeatherInfo
 }
 
 // GetLists handler

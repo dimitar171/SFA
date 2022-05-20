@@ -21,10 +21,16 @@ type formatedWeather struct {
 	Description  string `json:"description"`
 	City         string `json:"city"`
 }
+type WeatherUrl struct{ urlBase string }
 
-func (api WeatherInfo) GetWeather(lat, long string) formatedWeather {
-	url := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=ae63cfc04efb2375a879a9a9587a7589", lat, long)
-	fmt.Println(url)
+func NewWeather(url string) *WeatherUrl {
+	return &WeatherUrl{urlBase: url}
+}
+
+func (wp *WeatherUrl) GetWeather(lat, long string) formatedWeather {
+	wetURL := wp.urlBase
+	url := fmt.Sprintf(wetURL, lat, long)
+
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Fatal(err)
