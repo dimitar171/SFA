@@ -12,8 +12,6 @@ type List struct {
 	Name   string `json:"name"`
 	UserId int    `json:"userId"`
 }
-
-// Task is a struct containing Task data
 type Task struct {
 	Id        int    `json:"id"`
 	Text      string `json:"text"`
